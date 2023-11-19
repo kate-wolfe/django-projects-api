@@ -18,7 +18,7 @@ class Project(models.Model):
     description = models.CharField(max_length=250, blank=True)
     object_type = models.CharField(max_length=50)
     start_date = models.DateField()
-    end_date = models.DateField(null=True)
+    end_date = models.DateField(null=True, blank=True)
     notes = models.TextField(blank=True)
     clay_type = models.CharField(max_length=50, blank=True)
     glaze_type = models.CharField(max_length=50, blank=True)
@@ -39,8 +39,5 @@ class Project(models.Model):
 class Image(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     project_id = models.ForeignKey("Project", on_delete=models.CASCADE)
-    image_url = models.ImageField(upload_to="images")
+    image_url = models.ImageField(upload_to="static")
     cover_image = models.BooleanField()
-
-    def __str__(self):
-        return self.image_url
