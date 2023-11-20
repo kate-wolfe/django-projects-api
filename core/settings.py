@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import environ
 import dj_database_url
+import os
 
 env = environ.Env()
 environ.Env.read_env()
@@ -117,10 +118,8 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if env("DATABASE_URL", None) is None:
-    raise Exception("DATABASE_URL environment variable not defined")
 DATABASES = {
-    "default": dj_database_url.parse(env("DATABASE_URL")),
+    "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
 }
 
 
