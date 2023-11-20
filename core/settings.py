@@ -117,7 +117,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {"default": {dj_database_url.parse(env("DATABASE_URL"))}}
+if env("DATABASE_URL", None) is None:
+    raise Exception("DATABASE_URL environment variable not defined")
+DATABASES = {
+    "default": dj_database_url.parse(env("DATABASE_URL")),
+}
 
 
 # Password validation
