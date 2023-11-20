@@ -83,6 +83,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = (
     "http://localhost:3000",
     "http://localhost:8000",
+    "https://orca-app-az4mr.ondigitalocean.app/",
 )
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
