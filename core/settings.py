@@ -33,6 +33,8 @@ DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = [env.str("DJANGO_ALLOWED_HOSTS")]
 
+# ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
 
 # Application definition
 
@@ -108,8 +110,13 @@ TEMPLATES = [
     },
 ]
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-SITE_ID = 1
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_USE_TLS = env("EMAIL_USE_TLS")
+EMAIL_PORT = env("EMAIL_PORT")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+SITE_ID = 2
 
 WSGI_APPLICATION = "core.wsgi.application"
 
@@ -117,6 +124,19 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+"""
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
+    }
+}
+
+"""
 DATABASE_URL = os.getenv("DATABASE_URL")
 DATABASES = {
     "default": dj_database_url.config(),
@@ -168,3 +188,22 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+# from online tutorial
+# https://www.rootstrap.com/blog/registration-and-authentication-in-django-apps-with-dj-rest-auth
+
+AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
+LOGIN_REDIRECT_URL = "/api/v1/projects/"
+
+REST_AUTH = {
+    "REGISTER_SERIALIZER": "projects.serializers.CustomRegisterSerializer",
+    "USER_DETAILS_SERIALIZER": "projects.serializers.CustomRegisterSerializer",
+}
